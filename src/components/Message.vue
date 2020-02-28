@@ -6,7 +6,6 @@
       <MessageUser v-if="message.type === 'user'" :message="message" />
       <MessageBotMusic v-if="message.type === 'botMusic'" :message="message" />
     </div>
-    <!-- <loading v-if="messageLoading" /> -->
   </div>
 </template>
 
@@ -35,5 +34,7 @@ export default {
   overflow-y: auto;
   padding-top: 20px;
   padding-bottom: 56px;
+  padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  padding-bottom: calc(56px + constant(safe-area-inset-bottom));
 }
 </style>

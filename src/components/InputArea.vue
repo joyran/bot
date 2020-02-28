@@ -1,11 +1,12 @@
 <!-- 输入框组件 -->
 <template lang="html">
-  <div class="inputarea" ref="inputarea">
+  <div class="inputarea" :class="{ focus: focus }" ref="inputarea">
     <input
       v-model="question"
       type="text"
       class="input"
       @focus="handleFocus"
+      @blur="handleBlur"
       @keydown.enter.prevent="handleSend"
     >
     <img @click="handleSend" class="send" :src="sendImage" alt="">
@@ -15,11 +16,13 @@
 <script>
 import { mapState } from 'vuex'
 import { translate } from '@/api'
+import { pageScrollToBottom } from '@/utils/util'
 
 export default {
   data () {
     return {
-      question: '' // 用户问题
+      question: '', // 用户问题
+      focus: false
     }
   },
 
@@ -35,11 +38,23 @@ export default {
   }),
 
   methods: {
+    // 输入框聚焦
     async handleFocus () {
       // 解决在 iPhone 上第三方输入法键盘遮挡输入框的问题
       setTimeout(function () {
         document.querySelector('.inputarea').scrollIntoView(true)
       }, 200)
+
+      this.focus = true
+
+      pageScrollToBottom()
+    },
+
+    // 输入框失焦
+    handleBlur () {
+      this.focus = false
+
+      pageScrollToBottom()
     },
 
     // 点击发送按钮
@@ -94,7 +109,13 @@ export default {
   background: #FFFFFF;
   padding: 10px 12px;
   display: flex;
-  align-items: center;
+  height: 56px;
+  height: calc(56px + env(safe-area-inset-bottom));
+  height: calc(56px + constant(safe-area-inset-bottom));
+
+  &.focus {
+    height: 56px !important;
+  }
 }
 
 .input {

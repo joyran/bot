@@ -9,7 +9,6 @@
 import { mapState } from 'vuex'
 import Message from '@/components/Message'
 import InputArea from '@/components/InputArea'
-import { isIPhoneX, isSafari } from '@/utils/util'
 
 export default {
   components: {
@@ -24,9 +23,7 @@ export default {
   created () {
     // 系统相关参数
     const systemInfo = {
-      innerHeight: window.innerHeight,
-      iPhoneX: isIPhoneX(),
-      safari: isSafari()
+      innerHeight: window.innerHeight
     }
 
     this.$store.commit('initSystemInfo', systemInfo)
@@ -36,13 +33,6 @@ export default {
       type: 'bot',
       content: '我是可盐可甜的然然，我什么都知道，不信你可以问我世界首富是谁，还可以听一首追光者'
     })
-  },
-
-  mounted () {
-    if (this.systemInfo.iPhoneX && !this.systemInfo.safari) {
-      document.querySelector('.inputarea').style.height = '90px'
-      document.querySelector('.message').style.marginBottom = '90px'
-    }
   },
 
   methods: {
